@@ -1,3 +1,6 @@
+
+// 서버 실행 진입점 및 서비스(DB) 등록
+
 using Microsoft.EntityFrameworkCore;
 using Server_RPG.Data; // AppDbContext가 있는 네임스페이스 확인 필요
 
