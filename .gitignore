@@ -43,4 +43,4 @@ Server_RPG/.vs/
 # =========================
 **/*secrets*.json
 
-appsettings.json
+Server_RPG/Server_RPG/appsettings.json
