@@ -1,0 +1,6 @@
+@Server_RPG_HostAddress = http://localhost:5043
+
+GET {{Server_RPG_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

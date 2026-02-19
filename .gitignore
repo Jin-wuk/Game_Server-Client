@@ -1,0 +1,46 @@
+# =========================
+# Unity (Client_RPG)
+# =========================
+Client_RPG/[Ll]ibrary/
+Client_RPG/[Tt]emp/
+Client_RPG/[Oo]bj/
+Client_RPG/[Bb]uild/
+Client_RPG/[Bb]uilds/
+Client_RPG/[Ll]ogs/
+Client_RPG/[Uu]serSettings/
+Client_RPG/[Mm]emoryCaptures/
+
+Client_RPG/*.sln
+Client_RPG/.vsconfig
+
+# Unity packages cache (kept under Library)
+Client_RPG/**/PackageCache/
+
+# IDE / Editor
+Client_RPG/.vs/
+Client_RPG/.vscode/
+Client_RPG/.idea/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# =========================
+# .NET (Server_RPG)
+# =========================
+Server_RPG/**/bin/
+Server_RPG/**/obj/
+Server_RPG/.vs/
+
+# user-specific
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# =========================
+# Optional: secrets
+# =========================
+**/*secrets*.json
+
+appsettings.json
