@@ -43,4 +43,6 @@ Server_RPG/.vs/
 # =========================
 **/*secrets*.json
 
+# 비밀번호가 포함된 설정 파일 제외
+Server_RPG/Server_RPG/appsettings.Development.json
 Server_RPG/Server_RPG/appsettings.json
