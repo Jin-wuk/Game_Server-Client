@@ -1,22 +1,28 @@
-
-// 서버 실행 진입점 및 서비스(DB) 등록
-
 using Microsoft.EntityFrameworkCore;
-using Server_RPG.Data; // AppDbContext가 있는 네임스페이스 확인 필요
+using Server_RPG.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // 1. 서비스 등록
 builder.Services.AddControllers();
 
-// 2. DB 연결 문자열 가져오기 (User Secrets 또는 appsettings에서 조회)
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+// [스웨거 추가 1] API 문서화를 위한 서비스 등록
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-// 3. MySQL DbContext 등록
+// 2. DB 연결
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 var app = builder.Build();
+
+// [스웨거 추가 2] 스웨거 UI 미들웨어 활성화
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 // 4. HTTP 요청 파이프라인 설정
 app.UseAuthorization();

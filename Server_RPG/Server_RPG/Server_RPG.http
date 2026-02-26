@@ -1,6 +1,9 @@
 @Server_RPG_HostAddress = http://localhost:5043
 
-GET {{Server_RPG_HostAddress}}/weatherforecast/
-Accept: application/json
+POST {{Server_RPG_HostAddress}}/api/Auth/login
+Content-Type: application/json
 
-###
+{
+  "email": "test1",
+  "password": "1234"
+}
