@@ -1,8 +1,13 @@
-﻿namespace Server_RPG.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Server_RPG.Models
 {
+    [Table("account")]
     public class Account
     {
-        public int AcoountID { get; set; }
+        [Key]
+        public int AccountID { get; set; }
         public string Email { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }

@@ -1,7 +1,12 @@
-﻿namespace Server_RPG.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Server_RPG.Models
 {
+    [Table("characterinfo")]
     public class Character
     {
+        [Key]
         public int CharacterID { get; set; }
         public int AccountID { get; set; }
         public string Nickname { get; set; } = string.Empty;
