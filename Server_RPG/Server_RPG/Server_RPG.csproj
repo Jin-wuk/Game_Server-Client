@@ -13,7 +13,8 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
-    <Folder Include="NewFolder1\" />
+    <Folder Include="Models\" />
+    <Folder Include="DTOs\" />
   </ItemGroup>
 
 </Project>
