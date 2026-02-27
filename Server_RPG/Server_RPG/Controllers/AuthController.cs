@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BCrypt.Net;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server_RPG.Data;
 using Server_RPG.DTOs;
-using BCrypt.Net;
+using Server_RPG.Models;
 
 namespace Server_RPG.Controllers
 {
@@ -55,7 +56,11 @@ namespace Server_RPG.Controllers
                 Level = account.Character.Level,
                 Gold = account.Character.Gold,
                 PosX = account.Character.PosX,
-                PosY = account.Character.PosY
+                PosY = account.Character.PosY,
+
+                MaxHP = account.Character.MaxHP,
+                CurrentHP = account.Character.CurrentHP,
+                AttackPower = account.Character.AttackPower
             };
 
             return Ok(responseDto);

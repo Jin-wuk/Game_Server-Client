@@ -17,4 +17,8 @@ public class LoginResponseDto // Result (서버 -> 클라 확정 결과)
     public long gold;
     public float posX;
     public float posY;
+
+    public int maxHP;
+    public int currentHP;
+    public int attackPower;
 }
