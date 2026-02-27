@@ -3,7 +3,7 @@ using System;
 public class AuthState
 {
     // Presenter가 구독할 상태 변화 이벤트
-    public event Action<string> OnLoginSuccess;
+    public event Action<LoginResponseDto> OnLoginSuccess;
     public event Action<string> OnLoginFailed;
 
     // 확정된 상태값 (외부에서는 읽기만 가능)
@@ -19,7 +19,7 @@ public class AuthState
         Level = result.level;
 
         // 상태가 갱신되었음을 브로드캐스트
-        OnLoginSuccess?.Invoke(Nickname);
+        OnLoginSuccess?.Invoke(result);
     }
 
     public void ApplyLoginError(string errorMessage)

@@ -62,8 +62,12 @@
     <Compile Include="Assets\02_Scripts\Features\Auth\AuthHandler.cs" />
     <Compile Include="Assets\04_Art\Hero Knight - Pixel Art\Demo\HeroKnight.cs" />
     <Compile Include="Assets\02_Scripts\Network\DTOs\AuthDto.cs" />
+    <Compile Include="Assets\02_Scripts\Features\Player\PlayerPresenter.cs" />
     <Compile Include="Assets\02_Scripts\Core\NetworkManager.cs" />
+    <Compile Include="Assets\02_Scripts\Network\DTOs\PositionSyncDto.cs" />
     <Compile Include="Assets\02_Scripts\Features\Auth\LoginPresenter.cs" />
+    <Compile Include="Assets\02_Scripts\Features\Player\PlayerState.cs" />
+    <Compile Include="Assets\02_Scripts\Features\Player\PlayerMovement.cs" />
     <Compile Include="Assets\02_Scripts\Core\GameManager.cs" />
     <Compile Include="Assets\02_Scripts\Features\Auth\AuthState.cs" />
     <Compile Include="Assets\04_Art\Hero Knight - Pixel Art\Demo\DestroyEvent_HeroKnight.cs" />

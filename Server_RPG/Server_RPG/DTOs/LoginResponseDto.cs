@@ -11,5 +11,9 @@
         public long Gold { get; set; }
         public float PosX { get; set; }
         public float PosY { get; set; }
+
+        public int MaxHP { get; set; }
+        public int CurrentHP { get; set; }
+        public int AttackPower { get; set; }
     }
 }
