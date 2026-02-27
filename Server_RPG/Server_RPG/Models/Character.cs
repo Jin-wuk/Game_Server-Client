@@ -17,6 +17,12 @@ namespace Server_RPG.Models
         public float PosX { get; set; }
         public float PosY { get; set; }
 
+        // 전투 스탯
+        public int MaxHP { get; set; }
+        public int CurrentHP { get; set; }
+        public int AttackPower { get; set; }
+
+
         public Account Account { get; set; } = null!;
     }
 }

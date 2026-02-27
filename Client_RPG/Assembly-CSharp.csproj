@@ -59,34 +59,42 @@
     <Analyzer Include="C:\Uinity Editor\2022.3.11f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Features\Auth\AuthState.cs" />
-    <Compile Include="Assets\Scripts\Features\Auth\AuthHandler.cs" />
-    <Compile Include="Assets\Scripts\Features\Auth\LoginPresenter.cs" />
-    <Compile Include="Assets\Scripts\Core\NetworkManager.cs" />
-    <Compile Include="Assets\Scripts\Network\DTOs\AuthDto.cs" />
+    <Compile Include="Assets\02_Scripts\Features\Auth\AuthHandler.cs" />
+    <Compile Include="Assets\04_Art\Hero Knight - Pixel Art\Demo\HeroKnight.cs" />
+    <Compile Include="Assets\02_Scripts\Network\DTOs\AuthDto.cs" />
+    <Compile Include="Assets\02_Scripts\Core\NetworkManager.cs" />
+    <Compile Include="Assets\02_Scripts\Features\Auth\LoginPresenter.cs" />
+    <Compile Include="Assets\02_Scripts\Core\GameManager.cs" />
+    <Compile Include="Assets\02_Scripts\Features\Auth\AuthState.cs" />
+    <Compile Include="Assets\04_Art\Hero Knight - Pixel Art\Demo\DestroyEvent_HeroKnight.cs" />
+    <Compile Include="Assets\04_Art\Hero Knight - Pixel Art\Demo\Sensor_HeroKnight.cs" />
+    <Compile Include="Assets\04_Art\Hero Knight - Pixel Art\ColorSwap\ColorSwap_HeroKnight.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
-    <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
-    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
-    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
-    <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
+    <None Include="Assets\05_Fonts\TextMesh Pro\Shaders\TMPro.cginc" />
+    <None Include="Assets\05_Fonts\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
+    <None Include="Assets\05_Fonts\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
+    <None Include="Assets\05_Fonts\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
+    <None Include="Assets\05_Fonts\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
+    <None Include="Assets\05_Fonts\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
+    <None Include="Assets\05_Fonts\KoreanFont\Noto_Sans_KR\OFL.txt" />
+    <None Include="Assets\05_Fonts\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
+    <None Include="Assets\05_Fonts\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
+    <None Include="Assets\05_Fonts\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
+    <None Include="Assets\05_Fonts\TextMesh Pro\Shaders\TMP_SDF.shader" />
+    <None Include="Assets\05_Fonts\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
+    <None Include="Assets\05_Fonts\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
+    <None Include="Assets\05_Fonts\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
+    <None Include="Assets\05_Fonts\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
+    <None Include="Assets\05_Fonts\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+    <None Include="Assets\05_Fonts\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
+    <None Include="Assets\05_Fonts\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
+    <None Include="Assets\05_Fonts\KoreanFont\Noto_Sans_KR\README.txt" />
+    <None Include="Assets\05_Fonts\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
+    <None Include="Assets\05_Fonts\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
+    <None Include="Assets\05_Fonts\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
+    <None Include="Assets\05_Fonts\TextMesh Pro\Shaders\TMP_Sprite.shader" />
+    <None Include="Assets\04_Art\Hero Knight - Pixel Art\ColorSwap\Sprites-ColorSwap.shader" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
