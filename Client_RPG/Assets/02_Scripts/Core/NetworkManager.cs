@@ -37,4 +37,51 @@ public class NetworkManager : MonoBehaviour
             }
         }
     }
+
+    public IEnumerator GetJson<T>(string url, Action<T> onSuccess, Action<string> onError)
+    {
+        using (UnityWebRequest request = UnityWebRequest.Get(url))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                string json = request.downloadHandler.text;
+
+                //  JSON이 배열('[')로 시작하면 JsonHelper를 사용하여 파싱
+                if (json.Trim().StartsWith("["))
+                {
+                    T data = JsonHelper.FromJson<T>(json);
+                    onSuccess?.Invoke(data);
+                }
+                else
+                {
+                    T data = JsonUtility.FromJson<T>(json);
+                    onSuccess?.Invoke(data);
+                }
+            }
+            else
+            {
+                onError?.Invoke(request.error);
+            }
+        }
+    }
+}
+
+//  배열 형태의 JSON을 파싱하기 위한 도우미 클래스
+public static class JsonHelper
+{
+    public static T FromJson<T>(string json)
+    {
+        // 배열을 "Items"라는 이름의 객체로 감싸서 유니티가 읽을 수 있게 만듭니다.
+        string newJson = "{ \"Items\": " + json + " }";
+        Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(newJson);
+        return wrapper.Items;
+    }
+
+    [Serializable]
+    private class Wrapper<T>
+    {
+        public T Items;
+    }
 }
