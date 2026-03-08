@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Server_RPG.Configs;
 using Server_RPG.Data;
 using Server_RPG.DTOs;
 using Server_RPG.Models;
-using System.Linq;
 using Server_RPG.Services;
+using System.Linq;
 
 namespace Server_RPG.Controllers
 {
@@ -110,6 +111,23 @@ namespace Server_RPG.Controllers
                 character.Gold += 100; // 실제론 monster.GoldReward 사용
                 _context.SaveChanges();
 
+                //  리젠 예약 로직 
+                // 몬스터가 죽는 이 순간에 '나중에 다시 태어날 예약표'를 작성합니다.
+                var spawner = _context.MonsterSpawners
+                    .Include(s => s.MonsterTemplate) // 리젠 시 어떤 몬스터인지 알아야 하므로
+                    .FirstOrDefault(s => s.SpawnerID == monster.SpawnerID);
+
+                if (spawner != null)
+                {
+                    MonsterManager.RegenQueue.Enqueue(new MonsterManager.RegenInfo
+                    {
+                        MonsterTemplate = spawner.MonsterTemplate!, // 느낌표는 null 아님을 컴파일러에게 알려줌
+                        Spawner = spawner,
+                        // DB에 있는 RespawnTime만큼 현재 시간에 더합니다.
+                        RespawnTime = DateTime.Now.AddSeconds(spawner.RespawnTime)
+                    });
+                    Console.WriteLine($"[System] {monster.Name} 처치! {spawner.RespawnTime}초 후 리젠 예약 완료.");
+                }
                 // 7. 메모리에서 몬스터 제거 (나중에 리젠 시스템이 다시 살려낼 겁니다)
                 MonsterManager.LiveMonsters.TryRemove(request.InstanceID, out _);
             }

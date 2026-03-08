@@ -37,19 +37,44 @@ public class MonsterManager : MonoBehaviour
     //  핵심: 서버 메모리의 LiveMonsters와 내 화면을 동기화
     private IEnumerator SyncLiveMonsters()
     {
-        // 서버의 새로운 API 주소 (우리가 곧 만들 목록 조회 API)
-        string url = "http://localhost:5043/api/Monster/live-list?mapId=1";
+        while (true) //  무한 루프로 주기적 동기화
+        {
+            string url = "http://localhost:5043/api/Monster/live-list?mapId=1";
 
-        yield return StartCoroutine(NetworkManager.Instance.GetJson<List<MonsterInstanceDto>>(
-            url,
-            onSuccess: (monsterList) => {
-                foreach (var m in monsterList)
-                {
-                    SpawnOrUpdateMonster(m);
-                }
-            },
-            onError: (err) => Debug.LogError($"몬스터 동기화 실패: {err}")
-        ));
+            yield return StartCoroutine(NetworkManager.Instance.GetJson<List<MonsterInstanceDto>>(
+                url,
+                onSuccess: (monsterList) => {
+                    // 1. 서버 목록에 있는 몬스터들 소환/업데이트
+                    HashSet<int> serverInstanceIds = new HashSet<int>();
+
+                    foreach (var m in monsterList)
+                    {
+                        serverInstanceIds.Add(m.instanceID);
+                        SpawnOrUpdateMonster(m);
+                    }
+
+                    // 2.  중요: 서버 목록에는 없는데 내 화면(liveMonsters)에만 있다면? 
+                    // 누군가 잡았거나 리젠 대기 중인 놈이니 지워줍니다.
+                    List<int> toRemove = new List<int>();
+                    foreach (var id in liveMonsters.Keys)
+                    {
+                        if (!serverInstanceIds.Contains(id))
+                        {
+                            toRemove.Add(id);
+                        }
+                    }
+
+                    foreach (var id in toRemove)
+                    {
+                        RemoveMonster(id);
+                    }
+                },
+                onError: (err) => Debug.LogError($"몬스터 동기화 실패: {err}")
+            ));
+
+            //  2~3초마다 한 번씩 서버에 물어봅니다. (너무 빠르면 서버 부하)
+            yield return new WaitForSeconds(2.0f);
+        }
     }
 
     private void SpawnOrUpdateMonster(MonsterInstanceDto data)
