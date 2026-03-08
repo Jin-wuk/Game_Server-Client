@@ -1487,6 +1487,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2
+  canMove: 1
 --- !u!50 &1808905058
 Rigidbody2D:
   serializedVersion: 4
@@ -1550,7 +1551,8 @@ MonoBehaviour:
   monsterLayer:
     serializedVersion: 2
     m_Bits: 128
-  attackRange: 1.5
+  attackRange: 1
+  currentActionState: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
