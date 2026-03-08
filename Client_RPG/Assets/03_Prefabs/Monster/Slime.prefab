@@ -145,9 +145,9 @@ MonoBehaviour:
   monsterID: 0
   currentHP: 0
   maxHP: 0
-  moveSpeed: 1
+  moveSpeed: 0.5
   rangeRadius: 5
-  idleTime: 1.5
+  idleTime: 2
 --- !u!50 &2256189976819507019
 Rigidbody2D:
   serializedVersion: 4
