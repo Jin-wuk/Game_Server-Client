@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Server_RPG.Configs;
 using Server_RPG.Data;
 using Server_RPG.DTOs;
 using Server_RPG.Models;
 using System.Linq;
+using Server_RPG.Services;
 
 namespace Server_RPG.Controllers
 {
@@ -41,6 +43,67 @@ namespace Server_RPG.Controllers
 
             // 유니티 쪽에 잘 저장되었다고 200 OK 사인을 보냅니다.
             return Ok(new { message = "위치 저장 완료" });
+        }
+
+        // 플레이어 공격 API
+        [HttpPost("attack")]
+        public IActionResult Attack([FromBody] AttackRequestDto request)
+        {
+            // 1. [변경] DB가 아니라 '메모리(MonsterManager)'에서 실제 몬스터 인스턴스를 찾습니다.
+            if (!MonsterManager.LiveMonsters.TryGetValue(request.InstanceID, out var monster))
+            {
+                return NotFound("존재하지 않거나 이미 죽은 몬스터입니다.");
+            }
+
+            // 2. 캐릭터 정보는 영구 데이터이므로 DB에서 가져옵니다.
+            var character = _context.Characters.FirstOrDefault(c => c.CharacterID == request.CharacterID);
+            if (character == null) return NotFound("캐릭터 오류");
+
+            // 3. [보안 1] 플레이어 이동 개연성 체크 (기존 로직 유지)
+            float distFromLastSync = (float)Math.Sqrt(
+                Math.Pow(request.PlayerPosX - character.PosX, 2) +
+                Math.Pow(request.PlayerPosY - character.PosY, 2)
+            );
+            float maxPossibleMove = GameConfig.BASE_MOVE_SPEED * (GameConfig.SYNC_INTERVAL + 1.0f);
+            if (distFromLastSync > maxPossibleMove) return BadRequest("핵 의심: 비정상적 이동");
+
+            // 4. [보안 2] 사거리 체크 (변경: 클라 좌표가 아닌 '서버 메모리 상의 몬스터 좌표'와 비교)
+            float attackDist = (float)Math.Sqrt(
+                Math.Pow(request.PlayerPosX - monster.PosX, 2) + // 🌟 서버가 알고 있는 진짜 좌표
+                Math.Pow(request.PlayerPosY - monster.PosY, 2)
+            );
+
+            if (attackDist > GameConfig.BASE_ATTACK_RANGE + GameConfig.RANGE_MARGIN)
+            {
+                return BadRequest("사거리가 너무 멉니다.");
+            }
+
+            // 5. [전투 처리] 메모리의 몬스터 체력을 깎습니다. (DB 저장 X)
+            int damage = 10;
+            monster.CurrentHP -= damage;
+
+            bool isDead = false;
+            if (monster.CurrentHP <= 0)
+            {
+                monster.CurrentHP = 0;
+                isDead = true;
+
+                // 6. [사망 처리] 골드는 소중하니까 이때만 DB에 기록합니다.
+                character.Gold += 100; // 실제론 monster.GoldReward 사용
+                _context.SaveChanges();
+
+                // 7. 메모리에서 몬스터 제거 (나중에 리젠 시스템이 다시 살려낼 겁니다)
+                MonsterManager.LiveMonsters.TryRemove(request.InstanceID, out _);
+            }
+
+            return Ok(new
+            {
+                success = true,
+                damage = damage,
+                remainingHp = monster.CurrentHP,
+                isDead = isDead,
+                currentGold = character.Gold
+            });
         }
     }
 }

@@ -1,9 +1,16 @@
 
 using System.ComponentModel;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MonsterController : MonoBehaviour
 {
+    [Header("서버 데이터")]
+    public int instanceID;
+    public int monsterID;
+    public int currentHP;
+    public int maxHP;
+
     [Header("몬스터 이동 설정")]
     public float moveSpeed = 2f;
     public float rangeRadius = 5f;
@@ -17,10 +24,17 @@ public class MonsterController : MonoBehaviour
     private Animator anim;
     private SpriteRenderer spriteRenderer;
 
-    public void Init(Vector2 origin, float radius)
+    public void Init(MonsterInstanceDto data)
     {
-        spawnPosition = origin;
-        rangeRadius = radius;
+        instanceID = data.instanceID;
+        monsterID = data.monsterID;
+        currentHP = data.currentHP;
+        maxHP = data.maxHP;
+
+        // 서버가 정해준 스폰 좌표를 기준으로 배회 범위를 설정합니다.
+        spawnPosition = new Vector2(data.posX, data.posY);
+        transform.position = spawnPosition;
+
         SetNewTarget();
     }
 
@@ -78,5 +92,26 @@ public class MonsterController : MonoBehaviour
         Vector2 randomOffset = Random.insideUnitCircle * rangeRadius;
         targetPosition = spawnPosition + randomOffset;
         isMoving = true;
+    }
+    //  플레이어에게 맞았을 때 호출될 함수
+    public void OnDamaged(int damage, int remainingHp)
+    {
+        currentHP = remainingHp;
+
+        // 1. 피격 애니메이션이나 이펙트 실행
+        // if (anim != null) anim.SetTrigger("doHurt");
+
+        // 2. 사망 체크
+        if (currentHP <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        // 사망 애니메이션 실행 후 오브젝트 파괴
+        // if (anim != null) anim.SetTrigger("doDie");
+        Destroy(gameObject, 0.5f);
     }
 }

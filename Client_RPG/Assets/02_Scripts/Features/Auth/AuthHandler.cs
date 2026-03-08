@@ -10,15 +10,20 @@ public class AuthHandler : MonoBehaviour
         var requestDto = new LoginRequestDto { email = email, password = password };
         string jsonBody = JsonUtility.ToJson(requestDto);
 
-        // NetworkManager(우체국)에게 배달(POST) 요청!
-        StartCoroutine(NetworkManager.Instance.PostJson(
+        // [수정] <LoginResponseDto> 형식을 명시해줍니다.
+        // 이제 onSuccess의 매개변수는 json(string)이 아니라 실제 객체(response)가 됩니다.
+        StartCoroutine(NetworkManager.Instance.PostJson<LoginResponseDto>(
             serverUrl,
             jsonBody,
-            onSuccess: (jsonResponse) =>
+            onSuccess: (response) =>
             {
-                // 답장(JSON)이 오면 DTO로 풀어서 State에 넘김
-                var response = JsonUtility.FromJson<LoginResponseDto>(jsonResponse);
+                // 1. [중요] 나중에 어디서든 쓰기 위해 인스턴스에 저장 (아까 약속한 방식)
+                LoginResponseDto.Instance = response;
+
+                // 2. State에 결과 전달
                 State.ApplyLoginResult(response);
+
+                Debug.Log($"{response.nickname}님 로그인 성공!");
             },
             onError: (errorMsg) =>
             {

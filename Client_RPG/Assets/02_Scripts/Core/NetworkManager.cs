@@ -16,7 +16,7 @@ public class NetworkManager : MonoBehaviour
     }
 
     // 공통 POST 요청 함수 (어떤 Handler든 이것만 부르면 됨!)
-    public IEnumerator PostJson(string url, string jsonData, Action<string> onSuccess, Action<string> onError)
+    public IEnumerator PostJson<T>(string url, string jsonData, Action<T> onSuccess, Action<string> onError)
     {
         using (UnityWebRequest request = new UnityWebRequest(url, "POST"))
         {
@@ -29,11 +29,21 @@ public class NetworkManager : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                onSuccess?.Invoke(request.downloadHandler.text); // 성공 시 답장 원본 전달
+                string json = request.downloadHandler.text;
+                // GetJson과 마찬가지로 T 타입으로 자동 변환해서 전달
+                try
+                {
+                    T data = JsonUtility.FromJson<T>(json);
+                    onSuccess?.Invoke(data);
+                }
+                catch (Exception e)
+                {
+                    onError?.Invoke($"JSON 파싱 에러: {e.Message}");
+                }
             }
             else
             {
-                onError?.Invoke(request.error); // 실패 시 에러 메시지 전달
+                onError?.Invoke(request.error);
             }
         }
     }

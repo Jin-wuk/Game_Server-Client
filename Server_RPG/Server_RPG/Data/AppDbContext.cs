@@ -10,6 +10,7 @@ namespace Server_RPG.Data
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Character> Characters { get; set; }
         public DbSet<Monster> Monsters { get; set; }
+        public DbSet<MonsterSpawner> MonsterSpawners { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,6 +24,9 @@ namespace Server_RPG.Data
 
             // 몬스터 테이블 이름을 'monster'로 강제 지정
             modelBuilder.Entity<Monster>().ToTable("monster");
+            // 스포너 테이블 이름도 'monster_spawner'로 강제 지정
+            modelBuilder.Entity<MonsterSpawner>().ToTable("monster_spawner");
         }
     }
 }
+    

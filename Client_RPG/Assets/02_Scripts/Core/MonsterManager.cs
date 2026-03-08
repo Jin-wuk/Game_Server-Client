@@ -15,12 +15,13 @@ public class MonsterManager : MonoBehaviour
 
     public List<MonsterPrefabMapping> prefabMappings;
     private Dictionary<int, GameObject> monsterPrefabDict = new Dictionary<int, GameObject>();
-    private Dictionary<int, MonsterDto> monsterDataDict = new Dictionary<int, MonsterDto>();
+
+    //  추가: 현재 화면에 소환된 실시간 몬스터들을 관리 (Key: InstanceID)
+    private Dictionary<int, GameObject> liveMonsters = new Dictionary<int, GameObject>();
 
     private void Awake()
     {
         Instance = this;
-
         foreach (var mapping in prefabMappings)
         {
             monsterPrefabDict[mapping.monsterID] = mapping.prefab;
@@ -29,43 +30,62 @@ public class MonsterManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(FetchMonsterData());
+        // 서버에서 '실시간 몬스터 목록'을 가져옵니다.
+        StartCoroutine(SyncLiveMonsters());
     }
 
-    private IEnumerator FetchMonsterData()
+    //  핵심: 서버 메모리의 LiveMonsters와 내 화면을 동기화
+    private IEnumerator SyncLiveMonsters()
     {
-        string url = "http://localhost:5043/api/Monster";
+        // 서버의 새로운 API 주소 (우리가 곧 만들 목록 조회 API)
+        string url = "http://localhost:5043/api/Monster/live-list?mapId=1";
 
-        yield return StartCoroutine(NetworkManager.Instance.GetJson<List<MonsterDto>>(
+        yield return StartCoroutine(NetworkManager.Instance.GetJson<List<MonsterInstanceDto>>(
             url,
             onSuccess: (monsterList) => {
                 foreach (var m in monsterList)
                 {
-                    monsterDataDict[m.monsterID] = m;
-                    Debug.Log($"[MonsterManager] 몬스터 데이터 로드: {m.name}");
+                    SpawnOrUpdateMonster(m);
                 }
             },
-            onError: (err) => Debug.LogError($"몬스터 로드 실패: {err}")
+            onError: (err) => Debug.LogError($"몬스터 동기화 실패: {err}")
         ));
     }
 
-    // 몬스터 소환 함수
-    public GameObject SpawnMonster(int id, Vector3 position)
+    private void SpawnOrUpdateMonster(MonsterInstanceDto data)
     {
-        if (monsterPrefabDict.ContainsKey(id))
+        // 1. 이미 소환된 몬스터라면 위치/상태만 업데이트
+        if (liveMonsters.ContainsKey(data.instanceID))
         {
-            GameObject obj = Instantiate(monsterPrefabDict[id], position, Quaternion.identity);
+            // (옵션) 위치 동기화가 필요하다면 여기서 처리
+            return;
+        }
 
-            //  추가: 생성된 몬스터에게 서버 데이터를 주입!
-            MonsterState state = obj.GetComponent<MonsterState>();
-            if (state != null && monsterDataDict.ContainsKey(id))
+        // 2. 처음 보는 InstanceID라면 새로 소환
+        if (monsterPrefabDict.ContainsKey(data.monsterID))
+        {
+            Vector3 spawnPos = new Vector3(data.posX, data.posY, 0);
+            GameObject obj = Instantiate(monsterPrefabDict[data.monsterID], spawnPos, Quaternion.identity);
+
+            // 몬스터 컨트롤러에 서버 데이터(InstanceID 포함) 주입
+            var controller = obj.GetComponent<MonsterController>();
+            if (controller != null)
             {
-                state.Setup(monsterDataDict[id]);
+                controller.Init(data);
             }
 
-            return obj;
+            // 관리 리스트에 추가
+            liveMonsters.Add(data.instanceID, obj);
         }
-        return null;
+    }
+
+    //  몬스터 사망 시 호출 (딕셔너리에서 제거)
+    public void RemoveMonster(int instanceId)
+    {
+        if (liveMonsters.ContainsKey(instanceId))
+        {
+            Destroy(liveMonsters[instanceId]);
+            liveMonsters.Remove(instanceId);
+        }
     }
 }
-
