@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 2489163571130178720}
   - component: {fileID: 2256189976819507019}
   - component: {fileID: 3179586843289124337}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Slime
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -141,6 +141,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e9c917bcb8d76047b6740305f92eed8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instanceID: 0
+  monsterID: 0
+  currentHP: 0
+  maxHP: 0
   moveSpeed: 1
   rangeRadius: 5
   idleTime: 1.5
@@ -178,7 +182,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7954287729916436280}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:

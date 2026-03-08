@@ -67,16 +67,34 @@ namespace Server_RPG.Controllers
             float maxPossibleMove = GameConfig.BASE_MOVE_SPEED * (GameConfig.SYNC_INTERVAL + 1.0f);
             if (distFromLastSync > maxPossibleMove) return BadRequest("핵 의심: 비정상적 이동");
 
-            // 4. [보안 2] 사거리 체크 (변경: 클라 좌표가 아닌 '서버 메모리 상의 몬스터 좌표'와 비교)
+            // 몬스터가 자기 집(SpawnX, Y)에서 너무 멀리 벗어났는지 확인합니다.
+            float distFromSpawn = (float)Math.Sqrt(
+                Math.Pow(request.MonsterPosX - monster.SpawnX, 2) +
+                Math.Pow(request.MonsterPosY - monster.SpawnY, 2)
+            );
+
+            // 허용 범위(SpawnRange)에 통신 오차(Margin)를 조금 더해줍니다.
+            if (distFromSpawn > monster.SpawnRange + 1.0f)
+            {
+                return BadRequest("핵 의심: 몬스터가 이동 범위를 벗어났습니다.");
+            }
+
+            // 5. [사거리 체크] 
+            // 이제 서버는 클라이언트가 보고한 몬스터 위치(request.MonsterPosX)를 일단 믿어줍니다.
+            // (위 4번에서 이미 집 근처인걸 확인했으니까요!)
             float attackDist = (float)Math.Sqrt(
-                Math.Pow(request.PlayerPosX - monster.PosX, 2) + // 🌟 서버가 알고 있는 진짜 좌표
-                Math.Pow(request.PlayerPosY - monster.PosY, 2)
+                Math.Pow(request.PlayerPosX - request.MonsterPosX, 2) +
+                Math.Pow(request.PlayerPosY - request.MonsterPosY, 2)
             );
 
             if (attackDist > GameConfig.BASE_ATTACK_RANGE + GameConfig.RANGE_MARGIN)
             {
                 return BadRequest("사거리가 너무 멉니다.");
             }
+
+            //  [위치 동기화] 공격이 성공했으므로, 서버 메모리의 몬스터 좌표를 최신화해줍니다.
+            monster.PosX = request.MonsterPosX;
+            monster.PosY = request.MonsterPosY;
 
             // 5. [전투 처리] 메모리의 몬스터 체력을 깎습니다. (DB 저장 X)
             int damage = 10;

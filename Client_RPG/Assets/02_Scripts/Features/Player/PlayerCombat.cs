@@ -7,7 +7,6 @@ public class PlayerCombat : MonoBehaviour
     [Header("설정")]
     public LayerMask monsterLayer;
     public float attackRange = 1.5f;
-    public float moveSpeed = 5f;
 
     [Header("참조")]
     private Animator anim;
@@ -42,7 +41,7 @@ public class PlayerCombat : MonoBehaviour
             if (monsterCtrl != null)
             {
                 // 서버로 공격 패킷 전송
-                SendAttackRequestToServer(monsterCtrl.instanceID);
+                SendAttackRequestToServer(monsterCtrl);
 
                 // 일단 한 마리만 때리는 예시 (범위 공격이면 break 삭제)
                 break;
@@ -50,15 +49,18 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
-    private void SendAttackRequestToServer(int instanceID)
+    private void SendAttackRequestToServer(MonsterController target)
     {
         // 1. 데이터 준비 (LoginResponseDto.Instance 사용)
         AttackRequestDto request = new AttackRequestDto
         {
             characterID = LoginResponseDto.Instance.characterID,
-            instanceID = instanceID,
+            instanceID = target.instanceID,
             playerPosX = transform.position.x,
-            playerPosY = transform.position.y
+            playerPosY = transform.position.y,
+            monsterPosX = target.transform.position.x, // 몬스터의 X좌표
+            monsterPosY = target.transform.position.y  // 몬스터의 Y좌표
+
         };
 
         string jsonRequest = JsonUtility.ToJson(request);
@@ -71,7 +73,7 @@ public class PlayerCombat : MonoBehaviour
                 // result가 이미 AttackResponseDto 타입이므로 바로 사용 가능!
                 if (result.success)
                 {
-                    HandleAttackResponse(instanceID, result);
+                    HandleAttackResponse(target.instanceID, result);
                 }
             },
             onError: (err) => Debug.LogError($"공격 요청 실패: {err}")

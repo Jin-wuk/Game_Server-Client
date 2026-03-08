@@ -24,7 +24,12 @@ namespace Server_RPG.Services
                 Name = template.Name,
                 MaxHP = template.MaxHP,
                 CurrentHP = template.MaxHP,
-                PosX = randomX,
+
+                SpawnX = spawner.PosX,
+                SpawnY = spawner.PosY,
+                SpawnRange = spawner.SpawnRange,
+
+                PosX = spawner.PosX,
                 PosY = spawner.PosY
             };
 

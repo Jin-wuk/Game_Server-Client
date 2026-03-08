@@ -19,6 +19,11 @@
         public float PosX { get; set; }
         public float PosY { get; set; }
 
+        // 스폰 기준 좌표 (이동 범위 제한용)
+        public float SpawnX { get; set; }
+        public float SpawnY { get; set; }
+        public float SpawnRange { get; set; }
+
         public int GoldReward { get; set; }
         public int ExpReward { get; set; }
     }

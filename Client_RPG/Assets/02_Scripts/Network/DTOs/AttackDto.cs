@@ -7,6 +7,8 @@ public class AttackRequestDto
     public int instanceID;
     public float playerPosX;
     public float playerPosY;
+    public float monsterPosX;
+    public float monsterPosY;
 }
 
 [Serializable]
