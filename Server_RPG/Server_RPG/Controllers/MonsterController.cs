@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Server_RPG.Data;
 using Server_RPG.Models;
+using Server_RPG.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -39,6 +40,25 @@ namespace Server_RPG.Controllers
             }
 
             return monster;
+        }
+
+        // 유니티에서 api/Monster/live-list?mapId=1 로 호출합니다.
+        [HttpGet("live-list")]
+        public IActionResult GetLiveMonsters(int mapId)
+        {
+            // 1. 메모리(MonsterManager)에 있는 실시간 몬스터들을 가져옵니다.
+            // 2. 요청받은 MapID에 해당하는 몬스터만 필터링합니다.
+            var liveList = MonsterManager.LiveMonsters.Values
+                .Where(m => m.MapID == mapId)
+                .ToList();
+
+            if (liveList == null || liveList.Count == 0)
+            {
+                // 몬스터가 없어도 빈 리스트([])를 주는 것이 클라 입장에서 편합니다.
+                return Ok(new List<object>());
+            }
+
+            return Ok(liveList);
         }
     }
 }

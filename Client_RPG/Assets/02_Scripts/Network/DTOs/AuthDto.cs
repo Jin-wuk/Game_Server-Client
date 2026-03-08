@@ -10,6 +10,8 @@ public class LoginRequestDto // Command (클라 -> 서버 의도)
 [Serializable]
 public class LoginResponseDto // Result (서버 -> 클라 확정 결과)
 {
+    public static LoginResponseDto Instance;
+
     public string message;
     public int characterID;
     public string nickname;

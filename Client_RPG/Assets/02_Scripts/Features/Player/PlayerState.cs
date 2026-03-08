@@ -67,33 +67,32 @@ public class PlayerState : MonoBehaviour
     {
         while (true)
         {
-            // 5초마다 대기
             yield return new WaitForSeconds(5.0f);
 
-            // 현재 내 유니티 상의 위치값 가져오기
             var syncDto = new PositionSyncDto
             {
-                characterID = GameManager.Instance.CharacterID,
+                characterID = LoginResponseDto.Instance.characterID,
                 posX = transform.position.x,
                 posY = transform.position.y
             };
-            
+
             string jsonBody = JsonUtility.ToJson(syncDto);
 
-            // NetworkManager을 통해 서버로 전송
-            StartCoroutine(NetworkManager.Instance.PostJson(
+            // <SyncResponseDto>를 명시해서 호출합니다.
+            StartCoroutine(NetworkManager.Instance.PostJson<SyncResponseDto>(
                 syncUrl,
                 jsonBody,
                 onSuccess: (response) =>
                 {
-                    Debug.Log($"[자동 저장] 서버에 위치 기록됨: X({syncDto.posX}), Y({syncDto.posY})");
+                    // 이제 response.message로 서버가 보낸 "위치 저장 완료" 문구를 바로 쓸 수 있습니다.
+                    Debug.Log($"[서버 응답] {response.message}");
                 },
                 onError: (error) =>
                 {
-                    Debug.LogWarning($"[자동 저장 실패] {error}");
+                    Debug.LogWarning($"[저장 실패] {error}");
                 }
             ));
-
         }
     }
 }
+
