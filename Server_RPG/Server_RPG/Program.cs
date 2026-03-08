@@ -18,7 +18,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // [핵심 수정] SpawnService 등록은 반드시 Build() 이전에 해야 합니다!
 builder.Services.AddHostedService<SpawnService>();
-
+builder.Services.AddHostedService<RegenService>();
 // ------------------------------------------
 
 var app = builder.Build(); // 여기서 앱이 고정(Build)됩니다.
