@@ -1,0 +1,3 @@
+# 외부 아트·폰트 에셋(TextMesh Pro 셰이더 등)은 GitHub 언어 통계에서 제외
+Client_RPG/Assets/04_Art/** linguist-vendored
+Client_RPG/Assets/05_Fonts/** linguist-vendored
