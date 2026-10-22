@@ -13,7 +13,7 @@ Unity 클라이언트와 ASP.NET Core 서버, MySQL을 직접 연결해 로그�
 ## 2. 폴더 구조 (Monorepo)
 - `/Client_RPG`: Unity 프로젝트 (입력, 이동, 전투 연출, UI)
 - `/Server_RPG`: ASP.NET Core 프로젝트 (요청 검증, 몬스터 관리, DB 저장)
-- `/docs`: 아키텍처, DB 명세 문서
+- `/docs`: 아키텍처 문서
 
 ## 3. 구현 기능
 
@@ -57,4 +57,3 @@ Unity 클라이언트와 ASP.NET Core 서버, MySQL을 직접 연결해 로그�
 
 ## 6. 문서
 - [아키텍처](./Architecture.md)
-- [DB 테이블 명세](./Database_Schema.md)
