@@ -3,6 +3,8 @@
 
 로그인부터 몬스터 사냥, 골드 저장까지의 흐름을 구현했습니다.
 
+🎬 [시연 영상 보기 (Google Drive)](https://drive.google.com/file/d/1wuD2brEH9sN4zHWu7UTov1lw8DLVQKZG/view)
+
 ## 1. 기술 스택
 - **Client**: Unity 2022.3 (C#)
 - **Server**: ASP.NET Core Web API (.NET 8)
