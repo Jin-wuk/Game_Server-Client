@@ -46,3 +46,6 @@ Server_RPG/.vs/
 # 비밀번호가 포함된 설정 파일 제외
 Server_RPG/Server_RPG/appsettings.Development.json
 Server_RPG/Server_RPG/appsettings.json
+
+# Unity가 자동 생성하는 프로젝트 파일
+Client_RPG/*.csproj
